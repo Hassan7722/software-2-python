@@ -1,5 +1,5 @@
 import random
-
+from tabulate import tabulate
 
 class Car:
     def __init__(self, new_reg_num, new_max_speed, new_current_speed=0, new_distance=0):
@@ -19,6 +19,14 @@ class Car:
 
     def drive(self, hours):
         self.distance += self.current_speed * hours
+
+    def get_info(self):
+        return {
+            "reg_num": self.reg_num,
+            "max_speed": self.max_speed,
+            "current_speed": self.current_speed,
+            "distance": self.distance
+        }
 
 
 # Exercise 1
@@ -50,24 +58,24 @@ print(ford.distance)
 # Exercise 4
 cars = []
 
-for i in range(1, 11):
+for i in range(1,11):
     reg = "ABC-" + str(i)
     max_speed = random.randint(100, 200)
     car = Car(reg, max_speed)
     cars.append(car)
 
-while True:
+race = True
+
+while race:
     for car in cars:
-        change = random.randint(-10, 15)
-        car.accelerate(change)
+        car.accelerate(random.randint(-10, 15))
         car.drive(1)
-
-    for car in cars:
         if car.distance >= 10000:
-            break
-    else:
-        continue
-    break
+            race = False
 
+printable_cars = []
 for car in cars:
-    print(car.reg_num, car.max_speed, car.current_speed, int(car.distance))
+    printable_cars.append(car.get_info())
+
+table = tabulate(printable_cars, headers = "keys", tablefmt="fancy_grid")
+print(table)
