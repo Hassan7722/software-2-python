@@ -28,54 +28,47 @@ class Car:
             "distance": self.distance
         }
 
+class Race:
+    def __init__(self, name, distance, cars):
+        self.name = name
+        self.distance = distance
+        self.cars = cars
 
-# Exercise 1
-car1 = Car("ABC-123", 142)
+    def hour_passes(self):
+        for each_car in self.cars:
+            random_change = random.randint(-10, 15)
+            each_car.accelerate(random_change)
+            each_car.drive(1)
 
-print(car1.reg_num)
-print(car1.max_speed)
-print(car1.current_speed)
-print(car1.distance)
+    def print_status(self):
+        data = []
+        for each_car in self.cars:
+            data.append(each_car.get_info())
 
-# Exercise 2
-car2 = Car("ABC-123", 142)
+        print(tabulate(data, headers = "keys", tablefmt = "fancy_grid"))
 
-car2.accelerate(30)
-car2.accelerate(70)
-car2.accelerate(50)
+    def race_finished(self):
+        for each_car in self.cars:
+            if each_car.distance >= self.distance:
+                return True
 
-print(car2.current_speed)
+        return False
 
-car2.accelerate(-200)
-print(car2.current_speed)
-
-# Exercise 3
-ford = Car("ABC-123", 142, 60, 2000)
-ford.drive(1.5)
-
-print(ford.distance)
-
-# Exercise 4
 cars = []
 
-for i in range(1,11):
+for i in range(1, 11):
     reg = "ABC-" + str(i)
     max_speed = random.randint(100, 200)
     car = Car(reg, max_speed)
     cars.append(car)
 
-race = True
+race = Race("Grand_Demolition_Derby", 8000, cars)
 
-while race:
-    for car in cars:
-        car.accelerate(random.randint(-10, 15))
-        car.drive(1)
-        if car.distance >= 10000:
-            race = False
+hours = 0
+while not race.race_finished():
+    race.hour_passes()
+    hours += 1
+    if hours % 10 == 0:
+        race.print_status()
 
-printable_cars = []
-for car in cars:
-    printable_cars.append(car.get_info())
-
-table = tabulate(printable_cars, headers = "keys", tablefmt="fancy_grid")
-print(table)
+race.print_status()
