@@ -40,4 +40,3 @@ class Building:
     def fire_alarm(self):
         for elevator in self.elevators:
             elevator.go_to_floor(self.bottom_floor)
-

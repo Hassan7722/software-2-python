@@ -70,5 +70,4 @@ while not race.race_finished():
     hours += 1
     if hours % 10 == 0:
         race.print_status()
-
 race.print_status()
